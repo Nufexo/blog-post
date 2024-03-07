@@ -11,7 +11,7 @@ from flask_login import (
     logout_user,
     login_required,
 )
-from flask_sqlalchemy import SQLAlchemy
+cfrom flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship, DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text, Date
 from functools import wraps
@@ -19,10 +19,14 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 # Import your forms from the forms.py
 from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
+app.config["SECRET_KEY"] = os.environ.get("FLASK_KEY")
 ckeditor = CKEditor(app)
 bootstrap = Bootstrap5(app)
 gravatar = Gravatar(
