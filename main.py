@@ -22,7 +22,7 @@ from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "8BYkEfBA6O6donzWlSihBXox7C0sKR6b"
+app.config["SECRET_KEY"] = "YOUR SECRET KEY"
 ckeditor = CKEditor(app)
 bootstrap = Bootstrap5(app)
 gravatar = Gravatar(
@@ -251,6 +251,11 @@ def delete_post(post_id):
     db.session.delete(post_to_delete)
     db.session.commit()
     return redirect(url_for("get_all_posts"))
+
+
+@app.route("/delete-comment/<int:comment_id>")
+def delete_comment(comment_id):
+    pass
 
 
 @app.route("/about")
