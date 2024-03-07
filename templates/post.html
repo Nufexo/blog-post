@@ -1,0 +1,72 @@
+{% include "header.html" %}
+
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('{{post.img_url}}')">
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="post-heading">
+          <h1>{{ post.title }}</h1>
+          <h2 class="subheading">{{ post.subtitle }}</h2>
+          <span class="meta"
+            >Posted by
+            <a href="#">{{ post.author.nick}}</a>
+            on {{ post.date}}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Post Content -->
+<article>
+  <div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        {{ post.body|safe }}
+        <!--TODO: Only show Edit Post button if user id is 1 (admin user) -->
+        {%if current_user.id ==1%}
+        <div class="d-flex justify-content-end mb-4">
+          <a
+            class="btn btn-primary float-right"
+            href="{{url_for('edit_post', post_id=post.id)}}"
+            >Edit Post</a
+          >
+        </div>
+        {%endif%}
+
+        <!-- Comments Area -->
+        <!-- TODO: Add a CKEditor for commenting below -->
+        {%if current_user.is_authenticated%}
+        {{ckeditor.load(pkg_type="basic")}} {{ckeditor.config(name='body')}}
+        {%from 'bootstrap5/form.html' import render_form%} {{render_form(form)}}
+        {%else%}
+        <div class="comment">
+        <p><strong>Login In</strong> to leave a comment</p>
+        </div>
+        {%endif%}
+        <div class="comment">
+          <!-- TODO: Show all the com1ments on a post -->
+          {%for comment in post.comments%}
+          <ul class="commentList">
+            <li>
+              <div class="commenterImage">
+                <img src="{{comment.author.email| gravatar}}" alt="avatar icon">
+              </div>
+              <div class="commentText">
+                
+                <p>{{comment.text|safe}}</p>
+                <span class="date sub-text" style="font-size: medium;">{{comment.author.nick}}</span>
+              </div>
+            </li>
+          </ul>
+          {%endfor%}
+        </div>
+        
+      </div>
+    </div>
+  </article>
+  </div>
+
+{% include "footer.html" %}
